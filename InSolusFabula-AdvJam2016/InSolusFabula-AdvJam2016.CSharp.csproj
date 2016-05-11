@@ -69,9 +69,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\GameScript\Golden_Heaven.cs" />
     <Compile Include="Assets\Scripts\GameScript\Mall_Central.cs" />
     <Compile Include="Assets\Scripts\GameScript\Prologue.cs" />
     <Compile Include="Assets\Scripts\Gameplay\DialogueArrow.cs" />
+    <Compile Include="Assets\Scripts\Gameplay\PreventDestroyOnLoad.cs" />
     <Compile Include="Assets\Scripts\Graphics\SmoothIntoPosition.cs" />
     <Compile Include="Assets\Scripts\Graphics\SpinFadeIn.cs" />
     <Compile Include="Assets\Scripts\Graphics\TextComponent.cs" />

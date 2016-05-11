@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
+using System;
 
 public class ClickSceneToEnter : MonoBehaviour
 {
@@ -7,6 +9,7 @@ public class ClickSceneToEnter : MonoBehaviour
     public ColliderMouseOver mouseOver;
     public AudioSource playOnClick;
     public Mall_Central eventCentral;
+    public string SceneName;
 
     bool clicked = false;
     void Start()
@@ -24,19 +27,25 @@ public class ClickSceneToEnter : MonoBehaviour
                 eventCentral.StopMusic();
                 playOnClick.Play();
             }
-            StartCoroutine(ZoomIn());
+            StartCoroutine(ZoomIn(LoadScene));
         }
     }
 
-    IEnumerator ZoomIn()
+    IEnumerator ZoomIn(Action callback)
     {
         float time = 0f;
-        while (cam.orthographicSize > 0)
+        while (cam.orthographicSize > 0.0000000000001f) // weird camera effect
         {
-            cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, 0, time/10);
-            cam.transform.position = Vector3.Lerp(cam.transform.position, new Vector3(this.transform.position.x, this.transform.position.y, cam.transform.position.z), time/10);
+            cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, 0, time/15);
+            cam.transform.position = Vector3.Lerp(cam.transform.position, new Vector3(this.transform.position.x, this.transform.position.y, cam.transform.position.z), time/15);
             time += Time.deltaTime;
             yield return 1;
         }
+        callback();
+    }
+
+    private void LoadScene()
+    {
+        SceneManager.LoadScene(SceneName);
     }
 }

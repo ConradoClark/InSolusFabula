@@ -9,3 +9,5 @@ EditorBuildSettings:
     path: Assets/Prologue.unity
   - enabled: 1
     path: Assets/Mall_Central.unity
+  - enabled: 1
+    path: Assets/Golden_Heaven.unity
