@@ -34,6 +34,8 @@ public class TextComponent : MonoBehaviour
     private int charactersPerLine;
     private RectTransform rectTransform;
 
+    public bool IsFullyRendered { get; private set; }
+
     public enum TextDisposition
     {
         SingleLine,
@@ -68,6 +70,7 @@ public class TextComponent : MonoBehaviour
     {
         if (innerText != Text)
         {
+            IsFullyRendered = false;
             innerText = Text;
             SetText();
         }
@@ -93,8 +96,8 @@ public class TextComponent : MonoBehaviour
         }
 
         if (DialogueArrow != null) DialogueArrow.IsBlinking = false;
+        StopAllCoroutines();        
 
-        StopAllCoroutines();
         _initialized = true;
         foreach (Transform glyph in this.transform)
         {
@@ -151,6 +154,7 @@ public class TextComponent : MonoBehaviour
     {
         yield return FillTextSingleLine(text);
         if (DialogueArrow != null) DialogueArrow.IsBlinking = true;
+        IsFullyRendered = true;
     }
 
     private IEnumerator SetTextMultiLine(char[] text)
@@ -163,6 +167,7 @@ public class TextComponent : MonoBehaviour
             lineNumber++;
         }
         if (DialogueArrow != null) DialogueArrow.IsBlinking = true;
+        IsFullyRendered = true;
     }
 
     private IEnumerator SetTextMultiLineHyphenated(char[] text)
@@ -175,6 +180,7 @@ public class TextComponent : MonoBehaviour
             lineNumber++;
         }
         if (DialogueArrow != null) DialogueArrow.IsBlinking = true;
+        IsFullyRendered = true;
     }
 
     private SpriteRenderer CreateGlyph(char c)

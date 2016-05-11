@@ -29,7 +29,7 @@ public class Prologue : MonoBehaviour
         this.TextComponent.SoundEnabled = true;
         this.TextComponent.Text = "I never wanted any of this.";
         yield return WaitForNextClick();
-        this.TextComponent.Text = "For one last time, I pretended to see her smile...";        
+        this.TextComponent.Text = "For one last time, I pretended to see her smile...";
         yield return WaitForNextClick();
         this.TextComponent.Text = "Truthfully, it was the last time the world saw mine...";
         yield return WaitForNextClick();
@@ -53,12 +53,7 @@ public class Prologue : MonoBehaviour
 
     IEnumerator WaitForNextClick()
     {
-        while (!DialogueArrow.IsBlinking)
-        {
-            yield return 1;
-        }
-
-        while (!(TextBoxCollider.IsOverlapping && Input.GetMouseButtonDown(0)))
+        while (!TextComponent.IsFullyRendered || !(TextBoxCollider.IsOverlapping && Input.GetMouseButtonDown(0)))
         {
             yield return 1;
         }
