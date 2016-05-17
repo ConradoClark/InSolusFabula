@@ -10,6 +10,8 @@
 		_Opacity("Color - Opacity", Range(0,1)) = 1
 		_Colorize("Color - Colorize",Color) = (1,1,1,0)
 		[MaterialToggle] _Invert("Color - Invert Colors",float) = 0
+		_HAutoScroll("Scroll - Horizontal Scrolling Speed", float) = 0
+	    _VAutoScroll("Scroll - Vertical Scrolling Speed", float) = 0
 	}
 		SubShader
 	{

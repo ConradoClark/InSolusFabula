@@ -16,25 +16,47 @@ public class TextComponent : MonoBehaviour
     public Vector2 Offset;
     public Vector2 Scale;
     public DialogueArrow DialogueArrow;
+    public bool AutoBlinkDialogueArrow;
     public float TimeBetweenCharacters;
 
     //public int CharactersPerLine;
     public TextDisposition Disposition;
     [Header("Sound")]
     public AudioSource SoundOnCharacter;
-    public bool SoundEnabled;    
+    public bool SoundEnabled;
+    public int PlaySoundEachXCharacters;
     [Header("Spin Effect")]
     public int AmountOfCycles;
     public int AnglesPerFrame;
 
     private Sprite[] fontSpritesArray;
     private Dictionary<char, Sprite> fontSprites;
-    private bool _initialized;
     private string innerText;
     private int charactersPerLine;
     private RectTransform rectTransform;
+    private Coroutine mainTextCoroutine;
+    private bool stopText;
+    private bool isProcessingText;
+
+    [Header("Option")]
+    public SpriteRenderer OptionSelect;
+    private SpriteRenderer generatedOptionSelect;
+    public BoxCollider2D optionCollider;
+    public ColliderMouseOver optionMouseOver;
+    private Vector2 optionStart = Vector2.zero;
+    private Vector2 optionEnd = Vector2.zero;
 
     public bool IsFullyRendered { get; private set; }
+
+    public void Restart()
+    {
+        isProcessingText = stopText = false;
+        this.innerText = null;
+        foreach (Transform glyph in this.transform)
+        {
+            Destroy(glyph.gameObject);
+        }
+    }
 
     public enum TextDisposition
     {
@@ -59,46 +81,78 @@ public class TextComponent : MonoBehaviour
             if (this.charactersPerLine == 0) this.charactersPerLine = 1;
         }
 
-        if (!_initialized)
-        {
-            SetText();
-        }
+        mainTextCoroutine = StartCoroutine(UpdateText());
         this.innerText = Text;
     }
 
-    private void Update()
+    public IEnumerator CheckOptionSelect()
     {
-        if (innerText != Text)
+        while (true)
         {
-            IsFullyRendered = false;
-            innerText = Text;
-            SetText();
+            if (generatedOptionSelect != null)
+            {
+                generatedOptionSelect.enabled = optionMouseOver.IsOverlapping;
+            }
+            yield return 1;
         }
     }
 
-    private void OnDisable()
-    {
-        this.Text = "";
-        SetText();
-    }
-
-    public void SetColor(Color color)
-    {
-        this.TextureColor = color;
-        SetText();
-    }
-
-    private void SetText()
+    private void Update()
     {
         if (!this.isActiveAndEnabled)
         {
             return;
         }
 
-        if (DialogueArrow != null) DialogueArrow.IsBlinking = false;
-        StopAllCoroutines();        
+        if (innerText != Text)
+        {
+            IsFullyRendered = false;
+            innerText = Text;
+            mainTextCoroutine = StartCoroutine(UpdateText());
+        }
+    }
 
-        _initialized = true;
+    private void OnDisable()
+    {
+        Restart();
+        if (!this.isActiveAndEnabled)
+        {
+            return;
+        }
+        this.Text = "";
+        mainTextCoroutine = StartCoroutine(UpdateText());
+    }
+
+    public void SetColor(Color color)
+    {
+        this.TextureColor = color;
+    }
+
+    public IEnumerator SetText(string text)
+    {
+        IsFullyRendered = false;
+        this.innerText = this.Text = text;
+        yield return UpdateText();
+    }
+
+    private IEnumerator UpdateText()
+    {
+        while (isProcessingText)
+        {
+            stopText = true;
+            yield return 1;
+        }
+
+        stopText = false;
+        isProcessingText = true;
+
+        if (!this.isActiveAndEnabled)
+        {
+            yield break;
+        }
+
+        if (DialogueArrow != null && AutoBlinkDialogueArrow) DialogueArrow.IsBlinking = false;
+
         foreach (Transform glyph in this.transform)
         {
             Destroy(glyph.gameObject);
@@ -109,25 +163,52 @@ public class TextComponent : MonoBehaviour
         switch (this.Disposition)
         {
             case TextDisposition.SingleLine:
-                StartCoroutine(SetTextSingleLine(charList));
+                yield return SetTextSingleLine(charList, 0);
                 break;
 
             case TextDisposition.MultiLine:
-                StartCoroutine(SetTextMultiLine(charList));
+                yield return SetTextMultiLine(charList, 0);
                 break;
 
             case TextDisposition.MultiLineHyphenated:
-                StartCoroutine(SetTextMultiLineHyphenated(charList));
+                yield return SetTextMultiLineHyphenated(charList, 0);
                 break;
         }
+        isProcessingText = false;
+        mainTextCoroutine = null;
     }
 
-    private IEnumerator FillTextSingleLine(char[] text, int lineOffset = 0)
+    public IEnumerator AppendText(string text)
+    {
+        string fullText = (this.innerText + text);
+        var charList = (InvertText ? fullText.Reverse() : fullText).ToArray();
+
+        switch (this.Disposition)
+        {
+            case TextDisposition.SingleLine:
+                yield return SetTextSingleLine(charList, innerText.Length);
+                break;
+
+            case TextDisposition.MultiLine:
+                yield return SetTextMultiLine(charList, innerText.Length);
+                break;
+
+            case TextDisposition.MultiLineHyphenated:
+                yield return SetTextMultiLineHyphenated(charList, innerText.Length);
+                break;
+        }
+
+        this.innerText = this.Text = this.innerText + text;
+    }
+
+    private IEnumerator FillTextSingleLine(char[] text, int lineOffset = 0, int initialCharOffset = 0)
     {
         int soundplay = 0;
         Vector2 offset = Vector2.zero;
-        for (int i = 0; i < text.Length; i++)
+        for (int i = initialCharOffset; i < text.Length; i++)
         {
+            if (stopText) yield break;
+            if (i < 0) continue;
             char c = text[i];
             if (c == ' ')
             {
@@ -135,57 +216,82 @@ public class TextComponent : MonoBehaviour
             }
 
             SpriteRenderer renderer = CreateGlyph(c);
-            offset.x = (i * renderer.sprite.rect.size.x + this.CharDistance*i) * (this.Scale.x > 0 ? this.Scale.x : 1) * (RightToLeft ? -1 : 1);
+            offset.x = (i * renderer.sprite.rect.size.x + this.CharDistance * i) * (this.Scale.x > 0 ? this.Scale.x : 1) * (RightToLeft ? -1 : 1);
             offset.y = lineOffset * -renderer.sprite.rect.size.y * (this.Scale.x > 0 ? this.Scale.x : 1);
-            renderer.transform.localPosition = new Vector3(this.Offset.x + offset.x - this.rectTransform.sizeDelta.x/2 + renderer.sprite.rect.size.x/2,
-                                                           this.Offset.y + offset.y + this.rectTransform.sizeDelta.y / 2 - renderer.sprite.rect.size.y/2, 0);
+            renderer.transform.localPosition = new Vector3(this.Offset.x + offset.x - this.rectTransform.sizeDelta.x / 2 + renderer.sprite.rect.size.x / 2,
+                                                           this.Offset.y + offset.y + this.rectTransform.sizeDelta.y / 2 - renderer.sprite.rect.size.y / 2, 0);
 
-            if (SoundEnabled && SoundOnCharacter != null && soundplay%2 ==0)
+            if (i == 0)
+            {
+                optionStart = renderer.transform.localPosition;
+            }
+
+            optionEnd = renderer.transform.localPosition;           
+
+            if (PlaySoundEachXCharacters == 0) PlaySoundEachXCharacters = 2;
+            if (SoundEnabled && SoundOnCharacter != null && soundplay % PlaySoundEachXCharacters == 0)
             {
                 SoundOnCharacter.pitch = 0.9f + (Random.value / 6f);
                 SoundOnCharacter.Play();
             }
             soundplay++;
             yield return new WaitForSeconds(TimeBetweenCharacters);
-        }        
+        }
+        RenderOption(lineOffset);
     }
 
-    private IEnumerator SetTextSingleLine(char[] text)
+    private IEnumerator SetTextSingleLine(char[] text, int initialCharOffset)
     {
-        yield return FillTextSingleLine(text);
-        if (DialogueArrow != null) DialogueArrow.IsBlinking = true;
+        yield return FillTextSingleLine(text, initialCharOffset: initialCharOffset);
+        if (DialogueArrow != null && AutoBlinkDialogueArrow) DialogueArrow.IsBlinking = true;
         IsFullyRendered = true;
     }
 
-    private IEnumerator SetTextMultiLine(char[] text)
+    private IEnumerator SetTextMultiLine(char[] text, int initialCharOffset)
     {
         char[][] lines = text.GroupByWords(this.charactersPerLine).Select(h => h.ToArray()).ToArray();
         int lineNumber = 0;
+        int totalOffset = initialCharOffset;
         foreach (char[] line in lines)
         {
-            yield return FillTextSingleLine(line, lineNumber);
+            if (totalOffset > line.Length)
+            {
+                totalOffset -= Mathf.Min(line.Length + 1, totalOffset);
+                lineNumber++;
+                continue;
+            }
+            yield return FillTextSingleLine(line, lineNumber, totalOffset);
+            totalOffset -= line.Length;
             lineNumber++;
         }
-        if (DialogueArrow != null) DialogueArrow.IsBlinking = true;
+        if (DialogueArrow != null && AutoBlinkDialogueArrow) DialogueArrow.IsBlinking = true;
         IsFullyRendered = true;
     }
 
-    private IEnumerator SetTextMultiLineHyphenated(char[] text)
+    private IEnumerator SetTextMultiLineHyphenated(char[] text, int initialCharOffset)
     {
         char[][] lines = text.HyphenateAllLines(this.charactersPerLine).Select(h => h.ToArray()).ToArray();
         int lineNumber = 0;
+        int totalOffset = initialCharOffset;
         foreach (char[] line in lines)
         {
-            yield return FillTextSingleLine(line, lineNumber);
+            if (totalOffset > line.Length)
+            {
+                totalOffset -= Mathf.Min(line.Length, totalOffset);
+                continue;
+            }
+            yield return FillTextSingleLine(line, lineNumber, totalOffset);
+            totalOffset -= line.Length;
             lineNumber++;
         }
-        if (DialogueArrow != null) DialogueArrow.IsBlinking = true;
+        if (DialogueArrow != null && AutoBlinkDialogueArrow) DialogueArrow.IsBlinking = true;
         IsFullyRendered = true;
     }
 
     private SpriteRenderer CreateGlyph(char c)
     {
         GameObject glyph = new GameObject("Glyph_" + c.ToString());
+        glyph.layer = this.gameObject.layer;
         glyph.transform.parent = this.transform;
         glyph.transform.localScale = this.Scale == Vector2.zero ? Vector3.one : new Vector3(this.Scale.x, this.Scale.y);
 
@@ -197,8 +303,32 @@ public class TextComponent : MonoBehaviour
         renderer.sprite = fontSprites[c];
         renderer.transform.parent = glyph.transform;
         renderer.sortingOrder = this.Layer;
-        renderer.material.SetColor("_Color", this.TextureColor);
+        renderer.material.SetColor("_Color", this.TextureColor);        
+
         return renderer;
+    }
+
+    private void RenderOption(int lineOffset)
+    {
+        if (OptionSelect != null)
+        {
+            GameObject select = new GameObject("Select_"+ lineOffset);
+            select.transform.parent = this.gameObject.transform;
+            select.layer = this.gameObject.layer;
+            SpriteRenderer optionRenderer = select.AddComponent<SpriteRenderer>();
+            optionRenderer.sprite = OptionSelect.sprite;
+            optionRenderer.transform.localScale = new Vector3(OptionSelect.transform.localScale.x * (optionEnd.x+ 20f - optionStart.x) / 32f, OptionSelect.transform.localScale.y, OptionSelect.transform.localScale.z);
+            optionRenderer.transform.localPosition = optionStart + (optionEnd - optionStart) / 2f;
+            optionRenderer.sortingOrder = this.Layer - 1;
+            optionRenderer.material = Instantiate(OptionSelect.sharedMaterial);
+            optionRenderer.enabled = false;
+            generatedOptionSelect = optionRenderer;
+
+            optionCollider.size = optionRenderer.transform.localScale * 256f;
+            optionCollider.offset = optionRenderer.transform.localPosition;
+
+            StartCoroutine(CheckOptionSelect());
+        }
     }
 
     private char GetSymbolTranslation(string symbol)
