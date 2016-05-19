@@ -35,7 +35,7 @@ public class TextComponent : MonoBehaviour
     private int charactersPerLine;
     private RectTransform rectTransform;
     private Coroutine mainTextCoroutine;
-    private bool stopText;
+    public bool stopText;
     private bool isProcessingText;
 
     [Header("Option")]
@@ -89,7 +89,7 @@ public class TextComponent : MonoBehaviour
     {
         while (true)
         {
-            if (generatedOptionSelect != null)
+            if (generatedOptionSelect != null && this.enabled)
             {
                 generatedOptionSelect.enabled = optionMouseOver.IsOverlapping;
             }
@@ -115,6 +115,7 @@ public class TextComponent : MonoBehaviour
     private void OnDisable()
     {
         Restart();
+        stopText = true;
         if (!this.isActiveAndEnabled)
         {
             return;

@@ -77,11 +77,19 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\GameScript\Crop_Blank.cs" />
+    <Compile Include="Assets\Scripts\GameScript\Train_Station.cs" />
+    <Compile Include="Assets\Scripts\GameScript\Food_Court.cs" />
     <Compile Include="Assets\Scripts\GameScript\Global.cs" />
     <Compile Include="Assets\Scripts\GameScript\Golden_Heaven.cs" />
+    <Compile Include="Assets\Scripts\GameScript\Jackspot.cs" />
     <Compile Include="Assets\Scripts\GameScript\Mall_Central.cs" />
     <Compile Include="Assets\Scripts\GameScript\Prologue.cs" />
+    <Compile Include="Assets\Scripts\Gameplay\DeltaRunnerObject.cs" />
     <Compile Include="Assets\Scripts\Gameplay\DialogueArrow.cs" />
+    <Compile Include="Assets\Scripts\Gameplay\Inventory.cs" />
+    <Compile Include="Assets\Scripts\Gameplay\ItemObject.cs" />
+    <Compile Include="Assets\Scripts\Gameplay\MoneyCounter.cs" />
     <Compile Include="Assets\Scripts\Gameplay\MouseDescription.cs" />
     <Compile Include="Assets\Scripts\Gameplay\ObjectDescription.cs" />
     <Compile Include="Assets\Scripts\Gameplay\PreventDestroyOnLoad.cs" />

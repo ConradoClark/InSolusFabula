@@ -3,6 +3,7 @@ using System.Collections;
 
 public class Mall_Central : MonoBehaviour
 {
+    public TextComponent subtitleTextBox;
     public AudioSource[] InitialMallMusic;
     public bool musicPlaying;
     int currentMusic = 0;
@@ -14,6 +15,7 @@ public class Mall_Central : MonoBehaviour
 
     IEnumerator InitialMall()
     {
+        subtitleTextBox.Text = Global.Time;
         StartCoroutine(InitialMallMusicLoop());
         while (true)
         {
