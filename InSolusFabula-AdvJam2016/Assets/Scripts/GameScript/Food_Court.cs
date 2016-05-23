@@ -74,6 +74,13 @@ public class Food_Court : MonoBehaviour
         {
             GameObject.Destroy(neniaTransform.gameObject);
         }
+
+        if ((Global.Decisions.YouRememberNenia ||
+            Global.Decisions.NeniaIsYourSister ||
+            Global.Decisions.NeniaIsYourFriend) && Global.Decisions.AteFoodWithNenia)
+        {
+            GameObject.Destroy(neniaTransform.gameObject);
+        }
     }
 
     IEnumerator CheckForBack()
@@ -344,10 +351,16 @@ public class Food_Court : MonoBehaviour
         yield return mainTextBox.SetText("You see a chair in the food court. It is empty. ");
         yield return WaitForNextClick();
 
-        if (Global.Decisions.YouBoughtFood)
+        if (Global.Decisions.AteFoodAlone || Global.Decisions.AteFoodWithNenia)
+        {
+            yield return mainTextBox.SetText("You're already full. You don't need to eat. ");
+            yield return WaitForNextClick();
+        }
+        else if (Global.Decisions.YouBoughtFood)
         {
             mainTextBox.enabled = false;
             option1.enabled = option2.enabled = true;
+            option1.SetColor(Color.yellow);
 
             if (Global.Decisions.YouRememberNenia ||
                 Global.Decisions.NeniaIsYourSister ||
@@ -371,6 +384,7 @@ public class Food_Court : MonoBehaviour
                 case 1:
                     break;
             }
+            option1.SetColor(Color.white);
         }
 
         mainTextBox.SetColor(Color.white);
@@ -417,6 +431,8 @@ public class Food_Court : MonoBehaviour
                 yield return mainTextBox.SetText("It's been a while since I've eaten here. They really got better. ");
                 yield return WaitForNextClick();
             }
+
+            Global.Decisions.AteFoodWithNenia = true;
             neniaSmoothIn.ReturnToOriginal();
         }
         else
@@ -440,7 +456,7 @@ public class Food_Court : MonoBehaviour
             {
                 yield return mainTextBox.SetText("Hmm. This is tasty. ");
             }
-            
+            Global.Decisions.AteFoodAlone = true;
             yield return WaitForNextClick();
         }
 
@@ -496,7 +512,19 @@ public class Food_Court : MonoBehaviour
         mainTextBox.DialogueArrow.IsBlinking = false;
         subtitleTextBox.SetColor(mcDialogColor);
         subtitleTextBox.Text = Global.Time;
-        mainTextBox.Text = "The air is filled up with the scent of riches and wealth. ";
+        if (Global.Decisions.BlueCardWrittenAboutReality)
+        {
+            mainTextBox.Text = "Instead of food, you smell blood. Enough of reality for today... ";
+        }
+        else if (Global.Decisions.BlueCardWrittenAboutLove)
+        {
+            mainTextBox.Text = "The food smells unusually sweet today. It reeks of lust. ";
+        }
+        else
+        {
+            mainTextBox.Text = "Delicious aromas fill this place. Your mouth fills with water. ";
+        }
+
         yield break;
     }
 

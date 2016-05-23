@@ -28,7 +28,6 @@ public class Train_Station : MonoBehaviour
     public Color mcOtherDialogColor;
     public Color objectDialogColor;
     public ColliderMouseOver mainTextBoxCollider;
-    public SmoothIntoPosition clerkSmoothIn;
     public SmoothIntoPosition neniaSmoothIn;
 
     [Header("UI")]
@@ -60,14 +59,21 @@ public class Train_Station : MonoBehaviour
 
     void Start()
     {
-        StartCoroutine(StartFoodCourt());
+        StartCoroutine(StartTrainStation());
     }
 
     void SanityCheck()
     {
-        if (!Global.Decisions.YouRememberNenia &&
-                !Global.Decisions.NeniaIsYourSister &&
-                !Global.Decisions.NeniaIsYourFriend)
+        if (!Global.Decisions.AteFoodWithNenia)
+        {
+            GameObject.Destroy(pushingmanTransform.gameObject);
+        }
+        else if (Global.Decisions.YouAreACreep)
+        {
+            GameObject.Destroy(pushingmanTransform.gameObject);
+        }
+
+        if (!Global.Decisions.AteFoodWithNenia && !Global.Decisions.YouAreACreep)
         {
             GameObject.Destroy(neniaTransform.gameObject);
         }
@@ -100,7 +106,7 @@ public class Train_Station : MonoBehaviour
         }
     }
 
-    IEnumerator StartFoodCourt()
+    IEnumerator StartTrainStation()
     {
         SanityCheck();
         cam.orthographicSize = 0.000000000000000001f;
@@ -132,12 +138,189 @@ public class Train_Station : MonoBehaviour
 
     IEnumerator InspectPushingMan()
     {
-        yield break;
+        subtitleTextBox.SetColor(mcDialogColor);
+        subtitleTextBox.Text = "-LOOKING-";
+        mainTextBox.Text = "You see a mysterious figure. He is going to push Nenia on the train tracks. ";
+        yield return WaitForNextClick();
+
+        if (Global.Decisions.BlueCardWrittenAboutCalim)
+        {
+            mainTextBox.Text = "You look at his face. He is exactly like you. ";
+            yield return WaitForNextClick();
+        }
+
+        mainTextBox.enabled = false;
+        option1.enabled = option2.enabled = true;
+        option1.SetColor(Color.yellow);
+        option1.Text = "TRY to STOP him. -ENDING-";
+        option2.Text = "Think about it for some time. ";
+
+        yield return WaitForOptionClick();
+
+        switch (currentOption)
+        {
+            case 0:
+                yield return SaveNenia();
+                break;
+            case 1:
+                break;
+        }
+    }
+
+    IEnumerator SaveNenia()
+    {
+        mainTextBox.Text = "";
+        mainTextBox.AutoBlinkDialogueArrow = true;
+        backgroundMusic.Stop();
+        yield return BlinkGlimpse1();
+        if (Global.Time == "10:00 AM")
+        {
+            mainTextBox.Text = "You try to stop him. ";
+            yield return WaitForNextClick();
+
+            if (Global.Decisions.BlueCardWrittenAboutCalim)
+            {
+                mainTextBox.Text = "You accidentally trip and tumble on Nenia. ";
+                yield return WaitForNextClick();
+            }
+            else
+            {
+                mainTextBox.Text = "He is too fast. You can't help her. ";
+                yield return WaitForNextClick();
+            }
+
+            mainTextBox.Text = "She falls on the train tracks, and hits her head. ";
+            yield return WaitForNextClick();
+
+            mainTextBox.Text = "You jump, trying to save her. You're both rescued. ";
+            yield return WaitForNextClick();
+        }
+        else if (Global.Time == "10:34 AM")
+        {
+            if (Global.Decisions.BlueCardWrittenAboutCalim)
+            {
+                mainTextBox.Text = "You accidentally trip and tumble on Nenia. ";
+                yield return WaitForNextClick();
+            }
+            else
+            {
+                mainTextBox.Text = "He is too fast. You can't help her. ";
+                yield return WaitForNextClick();
+            }
+
+            mainTextBox.Text = "She falls on the train tracks... ";
+            yield return WaitForNextClick();
+
+            mainTextBox.Text = "You jump, trying to save her. ";
+            yield return WaitForNextClick();
+
+            mainTextBox.Text = "You do, but before you're rescued, the train comes. ";
+            yield return WaitForNextClick();
+
+            mainTextBox.Text = "She gives her life for you. You see blood everywhere. You lost her. ";
+            yield return WaitForNextClick();
+        }
+        if (Global.Time == "10:37 AM")
+        {
+            if (Global.Decisions.BlueCardWrittenAboutCalim)
+            {
+                mainTextBox.Text = "You accidentally trip and tumble on Nenia. ";
+                yield return WaitForNextClick();
+            }
+            else
+            {
+                mainTextBox.Text = "He is too fast. You can't help her. ";
+                yield return WaitForNextClick();
+            }
+
+            mainTextBox.Text = "She falls on the train tracks... ";
+            yield return WaitForNextClick();
+
+            mainTextBox.Text = "You jump, trying to save her. ";
+            yield return WaitForNextClick();
+
+            mainTextBox.Text = "The train is coming. You're both killed...";
+            yield return WaitForNextClick();
+        }
+        yield return GlimpseOfTheFuture();
+        SceneManager.LoadScene("Ending");
     }
 
     IEnumerator TalkToNenia()
     {
-        yield break;
+        subtitleTextBox.SetColor(mcDialogColor);
+        subtitleTextBox.Text = "-LOOKING-";
+
+        mainTextBox.Text = "You see Nenia. ";
+        yield return WaitForNextClick();
+
+        mainTextBox.enabled = false;
+        option1.enabled = option2.enabled = true;
+        option1.SetColor(Global.Decisions.YouAreACreep ? Color.yellow : Color.white);
+        option1.Text = Global.Decisions.YouAreACreep ? "Observe her. -ENDING-" : "Talk to her.";
+        option2.Text = "Think about it for some time. ";
+
+        yield return WaitForOptionClick();
+
+        switch (currentOption)
+        {
+            case 0:
+                if (Global.Decisions.YouAreACreep)
+                {
+                    mainTextBox.AutoBlinkDialogueArrow = true;
+                    backgroundMusic.Stop();                    
+                    hiss.Play();
+                    yield return BlinkGlimpse1();
+
+                    mainTextBox.Text = "You love her so much. You wonder if she will love you someday... ";
+                    yield return WaitForNextClick();
+
+                    mainTextBox.Text = "It's weird. You mean no harm. But you get closer and closer to her. ";
+                    yield return WaitForNextClick();
+
+                    mainTextBox.Text = "She looks back at you. ";
+                    yield return WaitForNextClick();
+
+                    mainTextBox.Text = "You get frightened. That wasn't supposed to happen. ";
+                    yield return WaitForNextClick();
+
+                    mainTextBox.Text = "You accidentally push her back, and she falls on the tracks. ";
+                    yield return WaitForNextClick();
+
+                    mainTextBox.Text = "You jump, crying, regretful of everything. ";
+                    yield return WaitForNextClick();
+
+                    if (Global.Time == "10:34 AM")
+                    {
+                        mainTextBox.Text = "The train is coming, but you still have time. ";
+                        yield return WaitForNextClick();
+
+                        mainTextBox.Text = "It's weird, but for a moment, she understands you. ";
+                        yield return WaitForNextClick();
+
+                        mainTextBox.Text = "She gives her life for you, and push you against the tracks. The train comes. But you don't see any blood. ";
+                        yield return WaitForNextClick();
+
+                        yield return GlimpseOfTheFuture();
+                        SceneManager.LoadScene("Ending");
+                    }
+                    else
+                    {
+                        mainTextBox.Text = "You're both killed. ";
+                        yield return WaitForNextClick();
+                    }
+                }
+                else
+                {
+                    subtitleTextBox.SetColor(mcDialogColor);
+                    subtitleTextBox.Text = "-LOOKING-";
+                    mainTextBox.Text = "You want to talk to her. However, only seeing her smile is more than enough for now. ";
+                    yield return WaitForNextClick();
+                }
+                break;
+            case 1:
+                break;
+        }
     }
 
     IEnumerator InspectTrainTracks()
@@ -190,6 +373,7 @@ public class Train_Station : MonoBehaviour
         mainTextBox.enabled = false;
         option1.enabled = option2.enabled = true;
 
+        option1.SetColor(Color.yellow);
         option1.Text = "JUMP. -ENDING- ";
         option2.Text = "Don't jump. ";
 
@@ -198,6 +382,10 @@ public class Train_Station : MonoBehaviour
         switch (currentOption)
         {
             case 0:
+                backgroundMusic.Stop();
+                yield return BlinkGlimpse1();
+                yield return mainTextBox.SetText("It is so obvious, isn't it?");                
+                yield return WaitForNextClick();
                 yield return GlimpseOfTheFuture();
                 SceneManager.LoadScene("Ending");
                 break;
@@ -205,6 +393,7 @@ public class Train_Station : MonoBehaviour
                 break;
         }
 
+        option1.SetColor(Color.white);
         cameraBlur.enabled = false;
     }
 
@@ -270,7 +459,23 @@ public class Train_Station : MonoBehaviour
         mainTextBox.DialogueArrow.IsBlinking = false;
         subtitleTextBox.SetColor(mcDialogColor);
         subtitleTextBox.Text = Global.Time;
-        mainTextBox.Text = "The air is filled up with the scent of riches and wealth. ";
+        if (Global.Decisions.BlueCardWrittenAboutReality)
+        {
+            mainTextBox.Text = "You see train tracks. Is it time to go? ";
+        }
+        else if (Global.Decisions.BlueCardWrittenAboutCalim)
+        {
+            mainTextBox.Text = "You feel familiar here. ";
+        }
+        else if (Global.Decisions.BlueCardWrittenAboutLove)
+        {
+            mainTextBox.Text = "Nothing is more romantic than a train. ";
+        }
+        else
+        {
+            mainTextBox.Text = "This is the train station. It seems calm. ";
+        }
+
         yield break;
     }
 

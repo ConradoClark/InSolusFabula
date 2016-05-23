@@ -5,7 +5,7 @@ using System.Text;
 
 public static class Global
 {
-    public static decimal Money = 400M;
+    public static decimal Money = 39.50M;
     public static decimal GoldRingPrice = 500M;
     public static decimal DeltaRunnerFee = 20M;
     public static decimal BlueCardRevealPrice = 100M;
@@ -69,6 +69,10 @@ public static class Global
         public static bool YouBoughtFood;
         public static bool YouBoughtEarlyFood;
         public static bool YouBoughtLateFood;
+
+        public static bool AteFoodWithNenia;
+        public static bool EndedBefore;
+        public static bool AteFoodAlone;
     }
 
     public static class Inventory

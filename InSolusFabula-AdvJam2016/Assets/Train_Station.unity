@@ -295,7 +295,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 91735411}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -554.5, y: -9, z: -90}
+  m_LocalPosition: {x: -554.5, y: -63, z: -90}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 542193059}
@@ -438,7 +438,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3369a8042e68814faf188a7b72f4dbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Description: Talk to Clerk
+  Description: Inspect Man
   mouseOver: {fileID: 91735415}
   offset: {x: 0, y: 0}
 --- !u!1 &178863102
@@ -942,7 +942,7 @@ GameObject:
   - 4: {fileID: 426519088}
   - 82: {fileID: 426519087}
   m_Layer: 0
-  m_Name: Music_CropBlank
+  m_Name: Music_TrainStation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -957,7 +957,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: eded1afd8980a7b4cab3b7d2bfa35ff1, type: 3}
+  m_audioClip: {fileID: 8300000, guid: eacc488834c13f448b02d3facc1049f1, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.67
   m_Pitch: 1
@@ -1567,29 +1567,25 @@ MonoBehaviour:
   option7: {fileID: 668098806}
   option8: {fileID: 998974908}
   option9: {fileID: 178863106}
-  shopkeeperDialogColor: {r: 0, g: 0, b: 0, a: 0}
   neniaDialogColor: {r: 0.93333334, g: 0.73333335, b: 1, a: 1}
   mcDialogColor: {r: 0.5921569, g: 0.6117647, b: 1, a: 1}
   mcOtherDialogColor: {r: 0.5921569, g: 0.6117647, b: 1, a: 1}
-  foodCourtColor: {r: 0, g: 0, b: 0, a: 0}
-  cropBlankColor: {r: 0, g: 0, b: 0, a: 0}
   objectDialogColor: {r: 0.60784316, g: 0.60784316, b: 0.60784316, a: 1}
-  mainTextBoxCollider: {fileID: 0}
-  clerkSmoothIn: {fileID: 0}
-  neniaSmoothIn: {fileID: 0}
-  backButton: {fileID: 0}
-  inventory: {fileID: 0}
-  canvas: {fileID: 0}
-  backgroundMusic: {fileID: 0}
-  hiss: {fileID: 0}
-  backScene: 
-  transition: {fileID: 0}
-  manager: {fileID: 0}
-  chair: {fileID: 0}
-  clock: {fileID: 0}
-  nenia: {fileID: 0}
-  neniaTransform: {fileID: 0}
-  coinSound: {fileID: 0}
+  mainTextBoxCollider: {fileID: 1785230414}
+  neniaSmoothIn: {fileID: 1126686861}
+  backButton: {fileID: 975515823}
+  inventory: {fileID: 1212995324}
+  canvas: {fileID: 1350320590}
+  backgroundMusic: {fileID: 426519087}
+  hiss: {fileID: 1966371020}
+  backScene: Mall_Central
+  transition: {fileID: 1565015067}
+  pushingman: {fileID: 91735415}
+  nenia: {fileID: 1724400985}
+  trainTracks: {fileID: 1793002691}
+  pushingmanTransform: {fileID: 91735413}
+  neniaTransform: {fileID: 2120025317}
+  coinSound: {fileID: 320569162}
 --- !u!4 &746008925
 Transform:
   m_ObjectHideFlags: 0
@@ -2686,7 +2682,7 @@ MonoBehaviour:
     Description: You are skeptical.
     ItemId: 2
   - Sprite: {fileID: 21300000, guid: cb2bca01944b06945a1868eb4bf9cf22, type: 3}
-    Description: You recognize love.
+    Description: You are alive.
     ItemId: 3
   - Sprite: {fileID: 21300000, guid: 64a17012933cbdf498fb5a44e74f24f8, type: 3}
     Description: You are connected.
@@ -3669,7 +3665,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3369a8042e68814faf188a7b72f4dbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Description: Inspect Chair
+  Description: Inspect Tracks
   mouseOver: {fileID: 1793002691}
   offset: {x: 0, y: 0}
 --- !u!60 &1793002694
@@ -4127,7 +4123,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2120025315}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -340, y: -2, z: -90}
+  m_LocalPosition: {x: -340, y: -87, z: -90}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1970405359}

@@ -37,6 +37,7 @@ public class Golden_Heaven : MonoBehaviour
     public ColliderMouseOver shopkeeper;
     public ColliderMouseOver nenia;
     public ColliderMouseOver goldring;
+    public Transform neniaTransform;
     [Header("UI")]
     public ColliderMouseOver backButton;
     public Inventory inventory;
@@ -75,7 +76,13 @@ public class Golden_Heaven : MonoBehaviour
         StartCoroutine(dialogueSmoothIn.GoToPosition());
         StartCoroutine(ZoomOut());
         subtitleTextBox.Text = Global.Time;
-        mainTextBox.Text = "The light flickers. You see the silhouette of someone you know.";
+
+        if (Global.Decisions.NeniaFirstFateShift)
+        {
+            neniaTransform.gameObject.SetActive(false);
+        }
+
+        mainTextBox.Text = "The light flickers." + (!Global.Decisions.NeniaFirstFateShift ? "You see the silhouette of someone you know." : "");
         yield return new WaitForSeconds(1f);
         yield return CheckActions();
     }
@@ -118,7 +125,7 @@ public class Golden_Heaven : MonoBehaviour
         mainTextBox.DialogueArrow.IsBlinking = false;
         subtitleTextBox.SetColor(mcDialogColor);
         subtitleTextBox.Text = Global.Time;
-        mainTextBox.Text = "The light flickers. You see the silhouette of someone you know. ";
+        mainTextBox.Text = "The light flickers. " + (!Global.Decisions.NeniaFirstFateShift ? "You see the silhouette of someone you know." : "");
         yield break;
     }
 
@@ -469,6 +476,11 @@ public class Golden_Heaven : MonoBehaviour
         StartCoroutine(subtitleTextBox.SetText("CALIM:"));
         yield return mainTextBox.SetText("They are so expensive, aren't they? ");
         yield return WaitForNextClick();
+
+        StartCoroutine(neniaFiance.ReturnToOriginal());
+
+        Global.Decisions.NeniaFirstFateShift = true;
+        Global.Decisions.NeniaIsYourSister = true;
     }
 
     IEnumerator ThingsAreALittleClouded()
@@ -488,6 +500,9 @@ public class Golden_Heaven : MonoBehaviour
         StartCoroutine(subtitleTextBox.SetText("NENIA:"));
         yield return mainTextBox.SetText("Heh, now you're just being silly. ");
         yield return WaitForNextClick();
+
+        Global.Decisions.NeniaFirstFateShift = true;
+        Global.Decisions.NeniaIsYourFriend = true;
     }
 
     IEnumerator YouAreACreep()
@@ -497,13 +512,18 @@ public class Golden_Heaven : MonoBehaviour
         yield return mainTextBox.SetText("Who are you?");
         yield return WaitForNextClick();
 
+        subtitleTextBox.SetColor(mcDialogColor);
         StartCoroutine(subtitleTextBox.SetText("CALIM:"));
         yield return mainTextBox.SetText("Uh, oh. No one. Sorry.");
         yield return WaitForNextClick();
 
+        subtitleTextBox.SetColor(neniaDialogColor);
         StartCoroutine(subtitleTextBox.SetText("NENIA:"));
         yield return mainTextBox.SetText("Please, don't stare at me like that.");
         yield return WaitForNextClick();
+
+        Global.Decisions.NeniaFirstFateShift = true;
+        Global.Decisions.YouAreACreep = true;
 
         yield break;
     }
@@ -590,7 +610,7 @@ public class Golden_Heaven : MonoBehaviour
         bool unlockCreep = (Global.Decisions.BlueCardWrittenAboutReality && Global.Decisions.BlueCardWrittenAboutLove);
         option2.SetColor(unlockCreep ? Color.yellow : Color.red);
         option2.Text = unlockCreep ? "I am her stalker. -FATE SHIFT - " : "You ARE the most important to me. - FATE SHIFT - ";
-        option3.Text = "Nevermind. My memories are still too weak";
+        option3.Text = "Nevermind. My memories are still too weak. ";
         yield return WaitForOptionClick();
 
         switch (currentOption)
@@ -695,23 +715,25 @@ public class Golden_Heaven : MonoBehaviour
             yield return mainTextBox.SetText("You feel that one day she'll love you back. ");
         }
 
+        yield return WaitForNextClick();
         if (Global.Decisions.YouAreACreep)
         {
             if (Global.Money >= Global.GoldRingPrice)
             {
                 mainTextBox.SetColor(Color.red);
                 yield return mainTextBox.SetText("YOU KNOW IT'S ALL A LIE. YOU DON'T CARE. YOU WANT TO BUY HER THE RING ANYWAY. ");
+                yield return WaitForNextClick();
                 mainTextBox.SetColor(Color.white);
             }
             else
             {
                 mainTextBox.SetColor(Color.red);
                 yield return mainTextBox.SetText("YOU NEED MONEY. YOU HAVE NO REGRETS. ");
+                yield return WaitForNextClick();
                 mainTextBox.SetColor(Color.white);
             }
         }
 
-        yield return WaitForNextClick();
         cameraBlur.enabled = false;
     }
     #endregion

@@ -48,7 +48,7 @@ public class Inventory : MonoBehaviour
 
             MouseDescription.AddInventoryDescription(description);
 
-            obj.transform.localPosition = new Vector3(j * 32f + (j>0 ? 10f : 0), 0, 0);
+            obj.transform.localPosition = new Vector3(j * 32f, 0, 0);
             j++;
         }
     }

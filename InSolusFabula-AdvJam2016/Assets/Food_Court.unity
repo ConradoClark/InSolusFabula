@@ -2839,7 +2839,7 @@ MonoBehaviour:
     Description: You are skeptical.
     ItemId: 2
   - Sprite: {fileID: 21300000, guid: cb2bca01944b06945a1868eb4bf9cf22, type: 3}
-    Description: You recognize love.
+    Description: You are alive.
     ItemId: 3
   - Sprite: {fileID: 21300000, guid: 64a17012933cbdf498fb5a44e74f24f8, type: 3}
     Description: You are connected.

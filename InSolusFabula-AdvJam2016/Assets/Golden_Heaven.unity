@@ -1610,6 +1610,7 @@ MonoBehaviour:
   shopkeeper: {fileID: 1030441649}
   nenia: {fileID: 334525199}
   goldring: {fileID: 258635323}
+  neniaTransform: {fileID: 271181283}
   backButton: {fileID: 975515823}
   inventory: {fileID: 1212995324}
   backgroundMusic: {fileID: 426519087}
@@ -2567,7 +2568,7 @@ MonoBehaviour:
     Description: You are skeptical.
     ItemId: 2
   - Sprite: {fileID: 21300000, guid: cb2bca01944b06945a1868eb4bf9cf22, type: 3}
-    Description: You recognize love.
+    Description: You are alive.
     ItemId: 3
   - Sprite: {fileID: 21300000, guid: 64a17012933cbdf498fb5a44e74f24f8, type: 3}
     Description: You are connected.

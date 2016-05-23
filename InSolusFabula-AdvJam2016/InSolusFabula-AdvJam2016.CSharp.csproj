@@ -13,13 +13,11 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>WebGL:20</UnityBuildTarget>
     <UnityVersion>5.3.4f1</UnityVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <LangVersion Condition=" '$(VisualStudioVersion)' != '10.0' ">4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -78,13 +76,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\GameScript\Crop_Blank.cs" />
-    <Compile Include="Assets\Scripts\GameScript\Train_Station.cs" />
+    <Compile Include="Assets\Scripts\GameScript\Ending.cs" />
     <Compile Include="Assets\Scripts\GameScript\Food_Court.cs" />
     <Compile Include="Assets\Scripts\GameScript\Global.cs" />
     <Compile Include="Assets\Scripts\GameScript\Golden_Heaven.cs" />
     <Compile Include="Assets\Scripts\GameScript\Jackspot.cs" />
     <Compile Include="Assets\Scripts\GameScript\Mall_Central.cs" />
     <Compile Include="Assets\Scripts\GameScript\Prologue.cs" />
+    <Compile Include="Assets\Scripts\GameScript\StartScreen.cs" />
+    <Compile Include="Assets\Scripts\GameScript\Train_Station.cs" />
     <Compile Include="Assets\Scripts\Gameplay\DeltaRunnerObject.cs" />
     <Compile Include="Assets\Scripts\Gameplay\DialogueArrow.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Inventory.cs" />

@@ -711,7 +711,13 @@ public class Jackspot : MonoBehaviour
 
     IEnumerator PlayLuckySlots()
     {
-        yield break;
+        subtitleTextBox.SetColor(objectDialogColor);
+        mainTextBox.AutoBlinkDialogueArrow = true;
+        StartCoroutine(arcadeSmoothIn.GoToPosition());
+        StartCoroutine(subtitleTextBox.SetText("ARCADE:"));
+        yield return mainTextBox.SetText("I'm sorry! The developer didn't have enough time to create this mini-game for Adventure Jam! ");
+        yield return WaitForNextClick();
+        yield return arcadeSmoothIn.ReturnToOriginal();
     }
 
     IEnumerator CheckActions()

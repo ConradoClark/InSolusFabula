@@ -530,7 +530,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 61f749a0ac8febd4fac0f14f7161c836, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -712,7 +712,7 @@ RectTransform:
   - {fileID: 1171488630}
   - {fileID: 3380278}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
@@ -1030,6 +1030,140 @@ Transform:
   m_Children: []
   m_Father: {fileID: 412589918}
   m_RootOrder: 6
+--- !u!1 &1004264317
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1004264322}
+  - 212: {fileID: 1004264321}
+  - 114: {fileID: 1004264320}
+  - 114: {fileID: 1004264319}
+  - 60: {fileID: 1004264318}
+  - 114: {fileID: 1004264323}
+  m_Layer: 0
+  m_Name: bg_mall_interactive_trainstation
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!60 &1004264318
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1004264317}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_Offset: {x: 0, y: 0}
+  m_Points:
+    m_Paths:
+    - - {x: -102.79266, y: -93.172714}
+      - {x: -92.73224, y: -88.40493}
+      - {x: -99.36755, y: -88.31121}
+    - - {x: 98.25556, y: -27.181713}
+      - {x: 41.100586, y: -34.77035}
+      - {x: -21.45552, y: -52.55111}
+      - {x: -99.39218, y: -89.67409}
+      - {x: -4.8266907, y: 64.551125}
+      - {x: 101.065346, y: 63.230034}
+    - - {x: -100.14737, y: -88.824455}
+      - {x: -2.315689, y: 65.172676}
+      - {x: -98.61902, y: 54.16108}
+    - - {x: 36.010193, y: 66.86355}
+      - {x: -1.0355682, y: 64.05372}
+      - {x: 100.022545, y: 60.81569}
+--- !u!114 &1004264319
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1004264317}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fbc7f02ca0d0154b8f92377a014b858, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Collider: {fileID: 1004264320}
+  SpriteRenderer: {fileID: 1004264321}
+  textComponent: {fileID: 1796776875}
+  Text: 'The end of all journeys... '
+--- !u!114 &1004264320
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1004264317}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9cdaf12b99285e48b4591bb9f0e6527, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AssignedCollider: {fileID: 1004264318}
+--- !u!212 &1004264321
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1004264317}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 6ca20ea1521228041a02cc6e2e6acaff, type: 2}
+  m_SubsetIndices: 
+  m_StaticBatchRoot: {fileID: 0}
+  m_UseLightProbes: 0
+  m_ReflectionProbeUsage: 0
+  m_ProbeAnchor: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingOrder: 1
+  m_Sprite: {fileID: 21300000, guid: 283fe44585d1d044c8969f4fab7c9056, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+--- !u!4 &1004264322
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1004264317}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -187.90833, y: 66.326836, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+--- !u!114 &1004264323
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1004264317}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e348d4084f477de4fb69f368223bbf01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cam: {fileID: 1385860151}
+  mouseOver: {fileID: 1004264320}
+  playOnClick: {fileID: 2098270893}
+  eventCentral: {fileID: 1463166612}
+  SceneName: Train_Station
 --- !u!1 &1014881082
 GameObject:
   m_ObjectHideFlags: 0
@@ -1057,7 +1191,7 @@ Transform:
   m_Children:
   - {fileID: 412589918}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
 --- !u!1 &1021584381
 GameObject:
   m_ObjectHideFlags: 0
@@ -1172,6 +1306,7 @@ GameObject:
   - 114: {fileID: 1124715117}
   - 114: {fileID: 1124715116}
   - 61: {fileID: 1124715115}
+  - 114: {fileID: 1124715118}
   m_Layer: 0
   m_Name: bg_mall_interactive_foodcourt
   m_TagString: Untagged
@@ -1204,7 +1339,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: efc54da6d6cb5fe4b861cbb33b1640e5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1263,6 +1398,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AssignedCollider: {fileID: 1124715115}
+--- !u!114 &1124715118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1124715112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e348d4084f477de4fb69f368223bbf01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cam: {fileID: 1385860151}
+  mouseOver: {fileID: 1124715117}
+  playOnClick: {fileID: 2098270893}
+  eventCentral: {fileID: 1463166612}
+  SceneName: Food_Court
 --- !u!1 &1171488629
 GameObject:
   m_ObjectHideFlags: 0
@@ -1371,7 +1522,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 22df1623e1ed3bd4c9120d7dd4497e5f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1701,7 +1852,7 @@ MonoBehaviour:
     Description: You are skeptical.
     ItemId: 2
   - Sprite: {fileID: 21300000, guid: cb2bca01944b06945a1868eb4bf9cf22, type: 3}
-    Description: You recognize love.
+    Description: You are alive.
     ItemId: 3
   - Sprite: {fileID: 21300000, guid: 64a17012933cbdf498fb5a44e74f24f8, type: 3}
     Description: You are connected.
@@ -1762,7 +1913,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 10
 --- !u!114 &1463166614
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1807,7 +1958,7 @@ Transform:
   - {fileID: 2098270892}
   - {fileID: 834492261}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
 --- !u!114 &1565003924
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2151,7 +2302,7 @@ Transform:
   - {fileID: 95515162}
   - {fileID: 261332063}
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 11
 --- !u!1 &2098270891
 GameObject:
   m_ObjectHideFlags: 0
@@ -2299,7 +2450,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 680b1c6e09ce1cd4f99dcad2f7fdfcb9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

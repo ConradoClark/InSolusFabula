@@ -40,7 +40,7 @@ public class MouseDescription : MonoBehaviour
         for (int i = 0; i < fullList.Length ; i++)
         {
             ObjectDescription desc = fullList[i];
-            if (desc.mouseOver.IsOverlapping)
+            if (desc != null && desc.mouseOver.IsOverlapping)
             {
                 objectToFollow.gameObject.SetActive(true);
                 textComponent.Text = desc.Description;
